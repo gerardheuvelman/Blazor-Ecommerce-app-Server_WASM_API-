@@ -1,0 +1,25 @@
+﻿<div class="col-5 border p-3 m-3" style="background-color:white">
+    Product No.: @Product.Id <br>
+    Add To Favorite: <input type="checkbox" class="form-check-inline" />
+    <br />
+    Name: @Product.Name <br>
+    Show Properties: <input class="form-check-inline" type="checkbox" @bind="Product.IsActive" />  <br>
+    @if (Product.IsActive)
+    {
+        <hr />
+        @foreach (var prop in Product.ProductProperties)
+        {
+            <p> @prop.Key - @prop.Value </p>
+        }
+
+    }
+    <_EditDeleteButton IsActive="@Product.IsActive" />
+</div>
+<br />
+
+
+@code 
+{
+    [Parameter]
+    public Demo_Product Product { get; set; }
+}
