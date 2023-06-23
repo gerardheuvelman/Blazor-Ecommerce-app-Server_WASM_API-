@@ -1,16 +1,33 @@
 ﻿@page "/learnBlazor/demoProduct"
 
 <h2 class=" text-primary">Demo Product</h2>
+<p>Favorites Total: @SelectedFavoriteCount</p>
+<br />
+<p>Last Selected Product: @LastSelectedProductName</p>
 <div class="row border" style="background-color:aqua    ">
     @foreach (var product in Products)
     {
-        <_ProductCard Product="product"/>
+        <_IndividualProduct 
+            Product=product 
+            OnFavoriteUpdated=FavoriteCountUpdate
+            OnLastSelectedProductChange=SelectedProductUpdate
+        >
+            <RF1>
+                Number 1!
+            </RF1>
+            <RF2>
+                Number 2!
+            </RF2>
+        </_IndividualProduct>
     }
 </div>
 
 @code
 {
     List<Demo_Product> Products = new();
+
+    private int SelectedFavoriteCount { get; set; } = 0;
+    private string LastSelectedProductName { get; set; }
 
     protected override void OnInitialized()
     {
@@ -42,4 +59,23 @@
             }
             });
     }
+
+    protected void FavoriteCountUpdate(bool isSelected)
+    {
+        if (isSelected)
+        {
+            SelectedFavoriteCount++;
+        }
+        else
+        {
+            SelectedFavoriteCount--;
+        }
+    }
+
+    protected void SelectedProductUpdate(string productName)
+    {
+        LastSelectedProductName = productName;
+    }
+
+
 }

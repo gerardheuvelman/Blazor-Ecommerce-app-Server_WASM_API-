@@ -1,0 +1,42 @@
+﻿@page "/learnBlazor/parentComponent"
+
+<h3>Parent / Child Relation</h3>
+<p><strong>@MessageText</strong></p>
+<_ChildComponent 
+    Title="This title is passed from parent component to child as a parameter"
+    OnButtonClick = "ShowMessage"
+>
+    <ChildContent>
+        Some content as a RenderFragment form parent!!
+    </ChildContent>
+    <DangerChildContent>
+        DANGER content as a RenderFragment form parent!!
+    </DangerChildContent>
+</_ChildComponent>
+
+
+<_ChildComponent 
+    Title="Second child component"
+    OnButtonClick="ShowMessage2"
+>
+Not much here..
+</_ChildComponent>
+
+<_AnotherChildComponent Placeholder="Placeholder from Parent"/>
+<_AnotherChildComponent MaxLength="5" />
+    
+
+    
+@code {
+    public string MessageText { get; set; } = "";
+
+    private void ShowMessage()
+    {
+        MessageText = "Button clicked on first child";
+    }
+
+    private void ShowMessage2()
+    {
+        MessageText = "Button clicked on second child";
+    }
+}

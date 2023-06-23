@@ -1,0 +1,52 @@
+﻿<div class="col-5 border p-3 m-3" style="background-color:white" @onclick="(args) => LastSelectedProductChange(args, Product.Name)">
+    <h4 class="text-secondary">Product No.: @Product.Id</h4> 
+    <input type="checkbox" @onchange="FavoriteUpdated" class="form-check-inline" /> Add To Favorite
+    <br />
+    <span> <strong>Two RenderFragments form parent: </strong> @RF1 @RF2 </span>
+    <br />
+    Name: @Product.Name <br>
+    Show Properties: <input class="form-check-inline" type="checkbox" @bind="Product.IsActive" />  <br>
+    @if (Product.IsActive)
+    {
+        <hr />
+        @foreach (var prop in Product.ProductProperties)
+        {
+            <p> @prop.Key - @prop.Value </p>
+        }
+
+    }
+    <_EditDeleteButton IsActive="@Product.IsActive" />
+</div>
+<br />
+
+
+@code 
+{
+    [Parameter]
+    public Demo_Product Product { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> OnFavoriteUpdated { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnLastSelectedProductChange { get; set; }
+
+    [Parameter]
+    public RenderFragment RF1 { get; set; }
+
+    [Parameter]
+    public RenderFragment RF2 { get; set; }
+
+
+    private async Task FavoriteUpdated(ChangeEventArgs e)
+    {
+        await OnFavoriteUpdated.InvokeAsync((bool)e.Value);
+    }
+
+    private async Task LastSelectedProductChange(MouseEventArgs e, string name)
+    {
+        await OnLastSelectedProductChange.InvokeAsync(Product.Name);
+    }
+
+
+}
