@@ -22,7 +22,7 @@
 Not much here..
 </_ChildComponent>
 
-<_AnotherChildComponent InputAttributes=InputAttributesFromParent />
+<_AnotherChildComponent placeholder="Placeholder from Parent" />
 
 <_AnotherChildComponent/>
 
@@ -31,12 +31,6 @@ Not much here..
     
 @code {
 
-    public Dictionary<string, object> InputAttributesFromParent { get; set; } = new()
-    {
-        {"required", null},
-        {"placeholder", "Enter name from parent"},
-        {"maxLength", 5}
-    };
 
 
 
