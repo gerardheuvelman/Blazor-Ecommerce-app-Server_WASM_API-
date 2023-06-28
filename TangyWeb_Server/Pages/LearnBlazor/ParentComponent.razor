@@ -2,19 +2,16 @@
 
 <h3>Parent / Child Relation</h3>
 <p><strong>@MessageText</strong></p>
-<_ChildComponent 
-    Title="This title is passed from parent component to child as a parameter"
-    OnButtonClick = "ShowMessage"
-    MessageForGrandChild="This message is from your grandparent (_ParentComponent)"
->
-    <ChildContent>
-        Some content as a RenderFragment form parent!!
-    </ChildContent>
-    <DangerChildContent>
-        DANGER content as a RenderFragment form parent!!
-    </DangerChildContent>
-</_ChildComponent>
-
+<CascadingValue Value=@MessageForGrandChild>
+    <_ChildComponent Title="This title is passed from parent component to child as a parameter" OnButtonClick="ShowMessage">
+        <ChildContent>
+            Some content as a RenderFragment form parent!!
+        </ChildContent>
+        <DangerChildContent>
+            DANGER content as a RenderFragment form parent!!
+        </DangerChildContent>
+    </_ChildComponent>
+</CascadingValue>
 
 <_ChildComponent 
     Title="Second child component"
@@ -31,8 +28,7 @@ Not much here..
 
     
 @code {
-
-
+    public string MessageForGrandChild { get; set; } = "This message is from your grandparent (_ParentComponent)";
 
 
     public string MessageText { get; set; } = "";
