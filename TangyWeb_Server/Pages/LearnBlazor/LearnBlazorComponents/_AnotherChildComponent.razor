@@ -2,18 +2,24 @@
     <h4 class="text-primary pt-3">Another Child Component</h4>
     <input 
         id="name" 
-        placeholder=@Placeholder
-        required=@Required 
-        maxlength=@MaxLength />
+        @attributes=InputAttributes
+         />
 </div>  
 @code {
-    [Parameter]
-    public string Placeholder { get; set; } = "Initial text";
+    //[Parameter]
+    //public string Placeholder { get; set; } = "Initial text";
+
+    //[Parameter]
+    //public string Required { get; set; } = "Required";
+
+    //[Parameter]
+    //public string MaxLength { get; set; } = "10";
 
     [Parameter]
-    public string Required { get; set; } = "Required";
-
-    [Parameter]
-    public string MaxLength { get; set; } = "10";
-
+    public Dictionary<string, object> InputAttributes { get; set; } = new()
+    {
+        {"required", "required"},
+        {"placeholder", "Initial Text"},
+        {"maxLength", 10}
+    };
 }

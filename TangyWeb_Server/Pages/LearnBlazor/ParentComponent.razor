@@ -22,12 +22,24 @@
 Not much here..
 </_ChildComponent>
 
-<_AnotherChildComponent Placeholder="Placeholder from Parent"/>
-<_AnotherChildComponent MaxLength="5" />
+<_AnotherChildComponent InputAttributes=InputAttributesFromParent />
+
+<_AnotherChildComponent/>
+
     
 
     
 @code {
+
+    public Dictionary<string, object> InputAttributesFromParent { get; set; } = new()
+    {
+        {"required", null},
+        {"placeholder", "Enter name from parent"},
+        {"maxLength", 5}
+    };
+
+
+
     public string MessageText { get; set; } = "";
 
     private void ShowMessage()
