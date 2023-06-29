@@ -7,11 +7,11 @@
     }
 } 
 
-window.SwalFire = (type, message) => {
+window.ShowSwal = (type, message) => {
     if (type === "success") {
-        Swal.fire(message, message, 'success');
+        Swal.fire("Success Notification", message, 'success');
     }
     else if (type === "error") {
-        Swal.fire(message, message, 'error');
+        Swal.fire("Error Notification", message, 'error');
     }
 } 

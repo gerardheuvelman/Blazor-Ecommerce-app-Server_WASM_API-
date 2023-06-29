@@ -63,11 +63,11 @@
 
     private async Task SweetAlertSuccess()
     {
-        await _JsRuntime.InvokeVoidAsync( "SwalFire","success", "Operation Successful");
+        await _JsRuntime.InvokeVoidAsync( "ShowSwal","success", "Operation Successful");
     }
 
     private async Task SweetAlertFailure()
     {
-        await _JsRuntime.InvokeVoidAsync("SwalFire", "error", "Operation failed");
+        await _JsRuntime.InvokeVoidAsync("ShowSwal", "error", "Operation failed");
     }
 }
