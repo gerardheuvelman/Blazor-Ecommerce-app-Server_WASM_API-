@@ -1,4 +1,5 @@
-﻿<h3>_ChildComponent</h3>
+﻿@inject IJSRuntime _JsRuntime
+<h3>_ChildComponent</h3>
 
 <div>
     <div class="alert alert-info">@Title</div>
@@ -40,8 +41,12 @@
     [Parameter]
     public RenderFragment DangerChildContent { get; set; }
 
-
     [Parameter]
     public EventCallback OnButtonClick { get; set; }
+
+    public async Task ToastrSuccess()
+    {
+        await _JsRuntime.ToastrSuccess("Operation Successful");
+    }
 
 }
