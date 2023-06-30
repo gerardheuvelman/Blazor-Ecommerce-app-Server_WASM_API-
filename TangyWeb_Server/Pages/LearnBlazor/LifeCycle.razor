@@ -1,4 +1,5 @@
 ﻿@page "/learnBlazor/lifeCycle"
+@using System.Threading
 
 <PageTitle>LifeCycle</PageTitle>
 
@@ -7,6 +8,11 @@
 <p role="status">Current count: @currentCount</p>
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+<br />
+@Count <button @onclick=StartCountdown>Start Countdown</button>
+
+
 <hr />
 <div class="border">
     <_LifeCycleChild CountValue=@currentCount></_LifeCycleChild>
@@ -23,7 +29,9 @@
 @code {
     private int currentCount = 0;
 
-    List<string> EventType = new(); 
+    List<string> EventType = new();
+
+    public int Count { get; set; } = 5;
 
     private void IncrementCount()
     {
@@ -60,7 +68,7 @@
         {
             currentCount = 999;
         }
-    EventType.Add("OnAfterRender is called!");
+        EventType.Add("OnAfterRender is called!");
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -68,7 +76,26 @@
         EventType.Add("OnAfterRenderAsync is called!");
     }
 
+    protected override bool ShouldRender()
+    {
+        EventType.Add("ShouldRender is called!");
+        return true;
+    }
 
+
+    void StartCountdown()
+    {
+        var timer = new Timer(TimeCallback, null, 1000, 1000);
+    }
+
+    void TimeCallback(object state)
+    {
+        if (Count > 0) 
+        {
+            Count--;
+            InvokeAsync(StateHasChanged); // here we force the UI to re-render. Without it the UI will not rerender every time the counter decrements
+        }
+    }
 
 
 }
