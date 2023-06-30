@@ -9,11 +9,20 @@
 
 @code 
 {
+    [Parameter]
+    public int CountValue { get; set; }
+
     List<string> EventType = new(); 
 
     protected override void OnInitialized()
     {
         EventType.Add("Child - OnInitialized is called!");
+    }
+
+
+    protected override void OnParametersSet()
+    {
+        EventType.Add("Child - OnParametersSet is called!");
     }
 
 
