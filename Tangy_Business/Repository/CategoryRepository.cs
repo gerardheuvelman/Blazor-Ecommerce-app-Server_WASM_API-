@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,29 +14,21 @@ namespace Tangy_Business.Repository;
 public class CategoryRepository : ICategoryRepository
 {
     private readonly ApplicationDbContext _db;
+    private readonly IMapper _mapper;
 
-    public CategoryRepository(ApplicationDbContext db)
+    public CategoryRepository(ApplicationDbContext db, IMapper mapper)
     {
         this._db = db;
+        this._mapper = mapper;
     }
 
     public CategoryDTO Create(CategoryDTO objDTO)
     {
-        Category category = new()
-        {
-            Name = objDTO.Name,
-            Id = objDTO.Id,
-            CreatedDate = DateTime.Now
-        };
-
+        Category category = _mapper.Map<Category>(objDTO);
         _db.Categories.Add(category);
         _db.SaveChanges();
 
-        return new CategoryDTO()
-        {
-            Id = category.Id,
-            Name = category.Name
-        }
+        return _mapper.Map<CategoryDTO>(category);
     }
 
     public int Delete(int id)
