@@ -13,7 +13,7 @@
                 Are you sure you want to delete?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @onclick="CancelDelete">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                     Cancel
                 </button>
                 <button type="button" class="btn btn-danger" @onclick="ConfirmDelete">
@@ -25,23 +25,14 @@
 </div>
 
 @code {
+
     [Parameter]
-    public string ShowConfirmationModal { get; set; }
+    public EventCallback<bool> OnConfirm { get; set; }
 
     private void ConfirmDelete()
     {
-        // Perform delete operation
-        
-
-        // Hide the modal after the delete operation is completed
-        ShowConfirmationModal = "hide";
+        OnConfirm.InvokeAsync(true);
     }
 
-    private void CancelDelete()
-    {
-        // Hide the modal
-        ShowConfirmationModal = "hide";
-
-    }
-
+ 
 }

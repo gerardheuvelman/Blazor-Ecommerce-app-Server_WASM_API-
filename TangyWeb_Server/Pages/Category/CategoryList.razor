@@ -2,7 +2,7 @@
 @inject ICategoryRepository _categoryRepository
 @inject IJSRuntime _JsRuntime
 
-<_DeleteConfirmation />
+<_DeleteConfirmation OnConfirm=@ConfirmDelete_Click />
 <div class="row mt-4">
     <div class="col-6">
         <h4 class="card-title text-primary">Category List</h4>
@@ -76,4 +76,13 @@
         _JsRuntime.InvokeVoidAsync("ShowDeleteConfirmationModal");
     }
 
+
+    async Task ConfirmDelete_Click(bool isConfirmed)
+    {
+        if (isConfirmed && DeleteCategoryId != 0) {
+            int numRecordsDeleted = _categoryRepository.Delete(DeleteCategoryId);
+            LoadCategories();
+            _JsRuntime.InvokeVoidAsync("HideDeleteConfirmationModal");
+        }
+    }
 }
