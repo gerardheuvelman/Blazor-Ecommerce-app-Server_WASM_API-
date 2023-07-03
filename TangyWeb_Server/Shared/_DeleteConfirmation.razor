@@ -5,18 +5,18 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Confirm Delete</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" @onclick="()=>OnConfirmDelete(false)">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                Are you sure you want to delete?
+                Are you sure you want to delete @Type "@FriendlyName"?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @onclick="()=>OnConfirmDelete(false)">
                     Cancel
                 </button>
-                <button type="button" class="btn btn-danger" @onclick="ConfirmDelete">
+                <button type="button" class="btn btn-danger" @onclick="()=>OnConfirmDelete(true)">
                     Delete
                 </button>
             </div>
@@ -24,15 +24,21 @@
     </div>
 </div>
 
-@code {
+@code {    
+    [Parameter]
+    public string Type { get; set; } = "";
 
     [Parameter]
-    public EventCallback<bool> OnConfirm { get; set; }
+    public string FriendlyName { get; set; } = "";
 
-    private void ConfirmDelete()
+    [Parameter]
+    public EventCallback<bool> ConfirmationChanged { get; set; }
+
+    private async Task OnConfirmDelete(bool value)
     {
-        OnConfirm.InvokeAsync(true);
-    }
-
- 
+        if (value)
+        {
+            await ConfirmationChanged.InvokeAsync(value);
+        }
+    } 
 }
