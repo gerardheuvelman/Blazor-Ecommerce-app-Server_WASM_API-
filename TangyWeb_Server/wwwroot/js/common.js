@@ -15,3 +15,13 @@ window.ShowSwal = (type, message) => {
         Swal.fire("Error Notification", message, 'error');
     }
 } 
+
+function ShowDeleteConfirmationModal()
+{
+    $('#deleteConfirmationModal').modal('show');
+}
+
+function HideDeleteConfirmationModal()
+{
+    $('#deleteConfirmationModal').modal('hide');
+}
