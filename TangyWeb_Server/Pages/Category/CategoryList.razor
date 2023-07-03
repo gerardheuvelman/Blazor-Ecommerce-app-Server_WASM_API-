@@ -29,7 +29,7 @@
                             <td>
                                 <NavLink href=@($"category/edit/{category.Id}") class="btn btn-primary">Edit</NavLink>
                                 <button @onclick="()=>HandleDelete(category.Id)" class="btn btn-danger">Delete</button>
-                                <_DeleteConfirmation ConfirmationChanged=@ConfirmDelete_Click Type="Category"  FriendlyName=@category.Name />
+                                <_DeleteConfirmation IsParentComponentProcessing=@IsLoading ConfirmationChanged=@ConfirmDelete_Click Type="Category"  FriendlyName=@category.Name />
 
                             </td>
                         </tr>
@@ -79,10 +79,13 @@
 
     async Task ConfirmDelete_Click(bool isConfirmed)
     {
-        if (isConfirmed && DeleteCategoryId != 0) {
+        IsLoading = true;
+        if (isConfirmed && DeleteCategoryId != 0) 
+        {
             int numRecordsDeleted = _categoryRepository.Delete(DeleteCategoryId);
             LoadCategories();
             _JsRuntime.InvokeVoidAsync("HideDeleteConfirmationModal");
         }
+        IsLoading = false;
     }
 }

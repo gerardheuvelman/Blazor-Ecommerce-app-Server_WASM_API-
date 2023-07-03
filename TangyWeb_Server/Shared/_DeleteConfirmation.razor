@@ -12,19 +12,36 @@
             <div class="modal-body">
                 Are you sure you want to delete @Type "@FriendlyName"?
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @onclick="()=>OnConfirmDelete(false)">
-                    Cancel
-                </button>
-                <button type="button" class="btn btn-danger" @onclick="()=>OnConfirmDelete(true)">
-                    Delete
-                </button>
-            </div>
+            @if(!IsParentComponentProcessing)
+            {
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @onclick="()=>OnConfirmDelete(false)">
+                        Cancel
+                    </button>
+                    <button type="button" class="btn btn-danger" @onclick="()=>OnConfirmDelete(true)">
+                        Delete
+                    </button>
+                </div>
+            }
+            else
+            {
+                <div class="modal-footer">
+                    <button type="button" disabled class="btn btn-secondary" data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+                    <button type="button" disabled class="btn btn-danger">
+                        Processing...
+                    </button>
+                </div>
+            }
         </div>
     </div>
 </div>
 
-@code {    
+@code {
+    [Parameter]
+    public bool IsParentComponentProcessing { get; set; }
+
     [Parameter]
     public string Type { get; set; } = "";
 
