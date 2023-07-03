@@ -25,6 +25,7 @@ public class CategoryRepository : ICategoryRepository
     public CategoryDTO Create(CategoryDTO objDTO)
     {
         Category category = _mapper.Map<Category>(objDTO);
+        category.CreatedDate = DateTime.Now;
         _db.Categories.Add(category);
         _db.SaveChanges();
 
@@ -33,21 +34,42 @@ public class CategoryRepository : ICategoryRepository
 
     public int Delete(int id)
     {
-        throw new NotImplementedException();
+        var obj = _db.Categories.FirstOrDefault(c => c.Id == id);
+        if (obj is not null) 
+        {
+            _db.Categories.Remove(obj);
+            return _db.SaveChanges();
+        }
+        return 0;
     }
 
     public CategoryDTO Get(int id)
     {
-        throw new NotImplementedException();
+        var obj = _db.Categories.FirstOrDefault(c => c.Id == id);
+        if (obj is not null)
+        {
+            return _mapper.Map<CategoryDTO>(obj);
+        }
+        return new CategoryDTO();
     }
 
     public IEnumerable<CategoryDTO> GetAll()
     {
-        throw new NotImplementedException();
+        return _mapper.Map<IEnumerable<Category>, IEnumerable<CategoryDTO>>(_db.Categories);
     }
 
     public CategoryDTO Update(CategoryDTO objDTO)
     {
-        throw new NotImplementedException();
+        Category? objFromDb = _db.Categories.FirstOrDefault(u => u.Id == objDTO.Id);
+        if (objFromDb is not null) 
+        {
+            // manual mapping
+
+            objFromDb.Name = objDTO.Name;
+            _db.Categories.Update(objFromDb);
+            _db.SaveChanges();
+            return _mapper.Map<CategoryDTO>(objFromDb);
+        }
+        return objDTO;
     }
 }
