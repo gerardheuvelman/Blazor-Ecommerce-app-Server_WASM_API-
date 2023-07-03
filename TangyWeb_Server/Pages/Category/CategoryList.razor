@@ -57,17 +57,24 @@
     private IEnumerable<CategoryDTO> Categories { get; set; } = new List<CategoryDTO>();
     private int DeleteCategoryId { get; set; } = 0;
 
-    public bool IsLoading { get; set; } = true;
+    public bool IsLoading { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await Task.Run(LoadCategories);
+        if (firstRender)
+        {
+            LoadCategories();
+        }
+
     }
 
     private void LoadCategories() 
     {
+        IsLoading = true;
+        StateHasChanged();
         Categories = _categoryRepository.GetAll();
         IsLoading = false;
+        StateHasChanged();
 
     }
 
