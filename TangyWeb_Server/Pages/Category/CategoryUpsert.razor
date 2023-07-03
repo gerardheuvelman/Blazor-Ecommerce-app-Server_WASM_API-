@@ -1,5 +1,6 @@
 ﻿@page "/category/create"
-
+@inject ICategoryRepository _categoryRepository
+@inject NavigationManager _navigationMananer
 
 <div class="row my-2">
     <h3 class="card-title text-primary mb-3">@Title Category</h3>
@@ -27,6 +28,7 @@
 
     private void UpsertCategory() 
     {
-        Category.Name = "Button was clicked";
+        _categoryRepository.Create(Category);
+        _navigationMananer.NavigateTo("category");
     }
 }
