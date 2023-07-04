@@ -40,9 +40,11 @@
     private string Title { get; set; }
 
     public bool IsLoading { get; set; }
-    protected override async Task OnInitializedAsync()
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         IsLoading = true;
+
         if (Id == 0) 
         {
             // Create
@@ -52,9 +54,14 @@
         {
             // Edit
             Title = "Update";
-            await Task.Run(LoadCategory);
+            if (firstRender)
+            {
+                LoadCategory();
+            }
+
         }
         IsLoading = false;
+        StateHasChanged();
     }
 
     private void LoadCategory()
