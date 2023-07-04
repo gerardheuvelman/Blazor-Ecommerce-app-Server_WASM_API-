@@ -43,30 +43,30 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        IsLoading = true;
-
-        if (Id == 0) 
+        
+        if (firstRender)
         {
-            // Create
-            Title = "Create";
-        }
-        else
-        {
-            // Edit
-            Title = "Update";
-            if (firstRender)
+            if (Id == 0)
             {
+                // Create
+                Title = "Create";
+            }
+            else
+            {
+                // Edit
+                Title = "Update";
                 LoadCategory();
             }
-
         }
-        IsLoading = false;
-        StateHasChanged();
     }
 
     private void LoadCategory()
     {
+        IsLoading = true;
+        StateHasChanged();
         Category = _categoryRepository.Get(Id);
+        IsLoading = false;
+        StateHasChanged();
     }
 
 
