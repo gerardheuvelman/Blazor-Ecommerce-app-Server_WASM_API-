@@ -38,7 +38,7 @@
                                 @product.Category.Name
                             </td>
                             <td>
-                                <NavLink href=@($"category/edit/{product.Id}") class="btn btn-primary">Edit</NavLink>
+                                <NavLink href=@($"product/edit/{product.Id}") class="btn btn-primary">Edit</NavLink>
                                 <button @onclick="()=>HandleDelete(product.Id)" class="btn btn-danger">Delete</button>
                                 <_DeleteConfirmation IsParentComponentProcessing=@IsLoading ConfirmationChanged=@ConfirmDelete_Click Type="Product" FriendlyName=@product.Name />
                             </td>
