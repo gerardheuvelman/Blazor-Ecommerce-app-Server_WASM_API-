@@ -71,7 +71,6 @@ public class ProductRepository : IProductRepository
             objFromDb.Color = objDTO.Color;
             objFromDb.ImageUrl = objDTO.ImageUrl;
             objFromDb.CategoryId = objDTO.CategoryId;
-            objFromDb.Category = _mapper.Map<Category>(objDTO.Category);
 
             _db.Products.Update(objFromDb);
             await _db.SaveChangesAsync();
