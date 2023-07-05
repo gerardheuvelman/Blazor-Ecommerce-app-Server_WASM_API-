@@ -45,7 +45,7 @@ public class ProductRepository : IProductRepository
 
     public async Task<ProductDTO> Get(int id)
     {
-        var obj = await _db.Products.FirstOrDefaultAsync(c => c.Id == id);
+        var obj = await _db.Products.Include(u=>u.Category).FirstOrDefaultAsync(c =>c.Id==id);
         if (obj is not null)
         {
             return _mapper.Map<ProductDTO>(obj);
@@ -55,7 +55,7 @@ public class ProductRepository : IProductRepository
 
     public async Task<IEnumerable<ProductDTO>> GetAll()
     {
-        return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDTO>>(_db.Products);
+        return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDTO>>(_db.Products.Include(u=>u.Category));
     }
 
     public async Task<ProductDTO> Update(ProductDTO objDTO)
