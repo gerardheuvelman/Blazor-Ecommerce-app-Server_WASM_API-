@@ -15,9 +15,10 @@ public class FileUpload : IFileUpload
 
     public bool DeleteFile(string filePath)
     {
-        if (File.Exists(_webHostEnvironment.WebRootPath+filePath))
+        var fullPath = _webHostEnvironment.WebRootPath + "/" + filePath;
+        if (File.Exists(fullPath))
         {
-            File.Delete(_webHostEnvironment.WebRootPath+filePath);
+            File.Delete(fullPath);
             return true;
         }
         return false;
@@ -27,7 +28,7 @@ public class FileUpload : IFileUpload
     {
         FileInfo fileInfo = new(file.Name);
         var fileName = Guid.NewGuid().ToString()+fileInfo.Extension;
-        var folderDirectory = $"{_webHostEnvironment.WebRootPath}\\images\\product";
+        var folderDirectory = $"{_webHostEnvironment.WebRootPath}/images/product";
         if (!Directory.Exists(folderDirectory))
         {
              Directory.CreateDirectory(folderDirectory);
@@ -37,7 +38,7 @@ public class FileUpload : IFileUpload
         await using FileStream fs = new(filePath, FileMode.Create);
         await file.OpenReadStream().CopyToAsync(fs);
 
-        var fullPath = $"images\\product\\{fileName}";
+        var fullPath = $"/images/product/{fileName}";
         return fullPath;
     }
 }

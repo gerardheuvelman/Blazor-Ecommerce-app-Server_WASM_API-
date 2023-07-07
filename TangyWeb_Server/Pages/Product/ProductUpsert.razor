@@ -59,9 +59,8 @@
                             </InputSelect>
                         <ValidationMessage For="()=>Product.CategoryId"></ValidationMessage>
                     </div>
-                    <div class="form-group col-6">
+                    <div class="form-group pt-4 col-6">
                         <InputFile OnChange="HandleImageUpload"/>
-
                     </div>
                 </div>
 
@@ -87,18 +86,14 @@
     };
     private IEnumerable<CategoryDTO> Categories { get; set; } = new List<CategoryDTO>();
     private string Title { get; set; } = "Create";
-
     public bool IsLoading { get; set; }
+    public string OldImageUrl { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             await LoadProduct();
-
-
-
-
         }
     }
 
@@ -116,9 +111,10 @@
         }
         else
         {
-            // Edit
+            // Update
             Title = "Update";
             Product = await _productRepository.Get(Id);
+            OldImageUrl = Product.ImageUrl;
         }
 
 
@@ -133,11 +129,17 @@
         {
             // Create
             await _productRepository.Create(Product);
+            await _jsRuntime.ToastrSuccess("Product Created Successfully");
         }
         else
         {
             // Update
+            if (OldImageUrl != Product.ImageUrl)
+            {
+                _fileUpload.DeleteFile(OldImageUrl);
+            }
             await _productRepository.Update(Product);
+            await _jsRuntime.ToastrSuccess("Product Created Successfully");
         }
         _navigationManager.NavigateTo("product");
     }

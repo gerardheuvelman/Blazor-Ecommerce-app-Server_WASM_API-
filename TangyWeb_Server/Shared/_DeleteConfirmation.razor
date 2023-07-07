@@ -10,7 +10,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                Are you sure you want to delete @Type "@FriendlyName"?
+                Are you sure you want to delete this @Type ?
             </div>
             @if(!IsParentComponentProcessing)
             {
@@ -44,9 +44,6 @@
 
     [Parameter]
     public string Type { get; set; } = "";
-
-    [Parameter]
-    public string FriendlyName { get; set; } = "";
 
     [Parameter]
     public EventCallback<bool> ConfirmationChanged { get; set; }
