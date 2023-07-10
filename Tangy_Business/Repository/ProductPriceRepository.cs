@@ -45,7 +45,7 @@ public class ProductPriceRepository : IProductPriceRepository
 
     public async Task<ProductPriceDTO> Get(int id)
     {
-        var obj = await _db.ProductPrices.Include(u=>u.Product).FirstOrDefaultAsync(c =>c.Id==id);
+        var obj = await _db.ProductPrices.FirstOrDefaultAsync(c =>c.Id==id);
         if (obj is not null)
         {
             return _mapper.Map<ProductPriceDTO>(obj);
@@ -53,9 +53,16 @@ public class ProductPriceRepository : IProductPriceRepository
         return new ProductPriceDTO();
     }
 
-    public async Task<IEnumerable<ProductPriceDTO>> GetAll()
+    public async Task<IEnumerable<ProductPriceDTO>> GetAll(int? id = null)
     {
-        return _mapper.Map<IEnumerable<ProductPrice>, IEnumerable<ProductPriceDTO>>(_db.ProductPrices.Include(u=>u.Product));
+        if (id is not null && id > 0)
+        {
+            return _mapper.Map<IEnumerable<ProductPrice>, IEnumerable<ProductPriceDTO>>(_db.ProductPrices.Where(u => u.ProductId == id));
+        }
+        else
+        { 
+            return _mapper.Map<IEnumerable<ProductPrice>, IEnumerable<ProductPriceDTO>>(_db.ProductPrices);
+        }
     }
 
     public async Task<ProductPriceDTO> Update(ProductPriceDTO objDTO)
