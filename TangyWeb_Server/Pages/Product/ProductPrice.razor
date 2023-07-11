@@ -23,12 +23,54 @@ else
         </div>
     </div>
 
-    <SfGrid @ref=productPriceGrid DataSource="@ProductPrices" AllowPaging="true" Toolbar="@(new List<string>{"Add","Edit","Update","Delete","Cancel"})">
-        <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" ShowDeleteConfirmDialog="true"></GridEditSettings>
-        <GridEvents OnActionBegin="ActionHandler" TValue="ProductPriceDTO"></GridEvents>
+    <SfGrid 
+        @ref=productPriceGrid 
+        DataSource="@ProductPrices" 
+        AllowPaging="true"
+        AllowFiltering="true"
+        AllowSorting="true"
+        Toolbar="@(new List<string>{"Add","Edit","Update","Delete","Cancel"})"
+    >
+        <GridEditSettings 
+            AllowAdding="true" 
+            AllowEditing="true" 
+            AllowDeleting="true" 
+            ShowDeleteConfirmDialog="true"
+        />
+        <GridEvents 
+            OnActionBegin="ActionHandler" 
+            TValue="ProductPriceDTO"
+        />
+        <GridFilterSettings
+            Type="FilterType.Menu"
+        />
+        <GridSortSettings
+            AllowUnsort="false"
+        >
+            <GridSortColumns>
+                <GridSortColumn
+                    Field="Price"
+                    Direction="SortDirection.Ascending"
+                />
+            </GridSortColumns>
+        </GridSortSettings>
+        <GridPageSettings 
+            PageSize="5" 
+            PageCount="5" 
+            PageSizes="true"
+        />
         <GridColumns>
-            <GridColumn IsPrimaryKey="true" AllowAdding="false" Field=@nameof(ProductPriceDTO.Id) HeaderText="ID"></GridColumn>
-            <GridColumn Field=@nameof(ProductPriceDTO.Size) HeaderText="Size">
+            <GridColumn 
+                IsPrimaryKey="true" 
+                AllowAdding="false" 
+                Field=@nameof(ProductPriceDTO.Id) 
+                HeaderText="ID"
+            >
+            </GridColumn>
+            <GridColumn 
+                Field=@nameof(ProductPriceDTO.Size) 
+                HeaderText="Size"
+            >
                 <EditTemplate>
                     <Syncfusion.Blazor.DropDowns.SfDropDownList 
                     DataSource=@SizeList 
@@ -38,7 +80,43 @@ else
                     </Syncfusion.Blazor.DropDowns.SfDropDownList>
                 </EditTemplate>
             </GridColumn>
-            <GridColumn Field=@nameof(ProductPriceDTO.Price) HeaderText="Price" Format="C2"></GridColumn>
+            <GridColumn 
+                Field=@nameof(ProductPriceDTO.Price) 
+                HeaderText="Price" 
+                Format="C2"
+            >
+            </GridColumn>
+            <GridColumn 
+                HeaderText="Manage Records" 
+                Width="150"
+            >
+                <GridCommandColumns>
+                    <GridCommandColumn 
+                        Type="CommandButtonType.Edit" 
+                        ButtonOption="@(new CommandButtonOptions() 
+                        { IconCss = "e-icons e-edit", 
+                        CssClass = "e-flat" })"
+                    />
+                    <GridCommandColumn 
+                        Type="CommandButtonType.Delete" 
+                        ButtonOption="@(new CommandButtonOptions() 
+                        { IconCss = "e-icons e-delete", 
+                        CssClass = "e-flat" })"
+                        />
+                        <GridCommandColumn 
+                        Type="CommandButtonType.Save" 
+                        ButtonOption="@(new CommandButtonOptions() 
+                        { IconCss = "e-icons e-update", 
+                        CssClass = "e-flat" })"
+                        />
+                    <GridCommandColumn 
+                        Type="CommandButtonType.Cancel" 
+                        ButtonOption="@(new CommandButtonOptions() 
+                        { IconCss = "e-icons e-cancel-icon", 
+                        CssClass = "e-flat" })"
+                        />
+                </GridCommandColumns>
+              </GridColumn>
         </GridColumns>
     </SfGrid>
 }       
