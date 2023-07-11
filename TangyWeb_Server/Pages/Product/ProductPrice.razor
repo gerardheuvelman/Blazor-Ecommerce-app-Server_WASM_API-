@@ -23,19 +23,22 @@ else
         </div>
     </div>
 
-    <SfGrid DataSource="@ProductPrices" AllowPaging="true" Toolbar="@(new List<string>{"Add","Edit","Update","Delete","Cancel"})">
+    <SfGrid @ref=productPriceGrid DataSource="@ProductPrices" AllowPaging="true" Toolbar="@(new List<string>{"Add","Edit","Update","Delete","Cancel"})">
         <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" ShowDeleteConfirmDialog="true"></GridEditSettings>
         <GridEvents OnActionBegin="ActionHandler" TValue="ProductPriceDTO"></GridEvents>
         <GridColumns>
-            <GridColumn Field=@nameof(ProductPriceDTO.Id) HeaderText="ID" TextAlign="TextAlign.Right" Width="120"></GridColumn>
-            <GridColumn Field=@nameof(ProductPriceDTO.Size) HeaderText="Size" Width="150">
+            <GridColumn Field=@nameof(ProductPriceDTO.Id) HeaderText="ID"></GridColumn>
+            <GridColumn Field=@nameof(ProductPriceDTO.Size) HeaderText="Size">
                 <EditTemplate>
-                    <Syncfusion.Blazor.DropDowns.SfDropDownList DataSource=@SizeList TItem="string" TValue="string" @bind-Value="((context as ProductPriceDTO).Size)">
-
+                    <Syncfusion.Blazor.DropDowns.SfDropDownList 
+                    DataSource=@SizeList 
+                    TItem="string" 
+                    TValue="string" @bind-Value="((context as ProductPriceDTO).Size)"
+                    >
                     </Syncfusion.Blazor.DropDowns.SfDropDownList>
                 </EditTemplate>
             </GridColumn>
-            <GridColumn Field=@nameof(ProductPriceDTO.Price) HeaderText="Price" Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Right" Width="130"></GridColumn>
+            <GridColumn Field=@nameof(ProductPriceDTO.Price) HeaderText="Price" Format="C2"></GridColumn>
         </GridColumns>
     </SfGrid>
 }       
@@ -47,9 +50,9 @@ else
 @code {
     [Parameter]
     public int Id { get; set; }
-
     private ProductDTO Product { get; set; } = new();
     private bool IsLoading { get; set; } = true;
+    private SfGrid<ProductPriceDTO> productPriceGrid;
 
     IEnumerable<string> SizeList = new List<string>() 
     {
@@ -73,7 +76,21 @@ else
 
     public async Task ActionHandler(ActionEventArgs<ProductPriceDTO> args)
     {
+        if(args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
+        {
+            args.Data.ProductId = Id;
+            if (args.Action == "Add")
+            {
+                await _productPriceRepository.Create(args.Data);
+                ProductPrices = await _productPriceRepository.GetAll(Id);
+                await productPriceGrid.Refresh();
 
+            }
+            else if (args.Action == "Edit")
+            {
+
+            }
+        }
 
     }
 }
