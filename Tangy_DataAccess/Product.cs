@@ -23,5 +23,5 @@ public class Product
     [ForeignKey(nameof(CategoryId))]
     public Category Category { get; set; }
 
-    public ICollection<ProductPrice>  ProductPrices { get; set; }
+    public ICollection<ProductPrice> ProductPrices { get; set; }
 }
