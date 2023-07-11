@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Tangy_Business.Repository;
 using Tangy_Business.Repository.IRepository;
+using Tangy_Models;
 
 namespace TangyWeb_API.Controllers;
 
@@ -16,6 +17,34 @@ public class ProductController : ControllerBase
 		_productRepository = productRepository;
 	}
 
+	[HttpGet]
+	public async Task<IActionResult> GetAll()
+	{
+		return Ok(await _productRepository.GetAll());
+	}
 
+    [HttpGet("{productId}")]
+    public async Task<IActionResult> Get(int? productId)
+    {
+        if (productId is null || productId == 0)
+		{
+			return BadRequest(new ErrorModelDTO()
+			{
+				ErrorMessage = "Invalid Id",
+				StatusCode = StatusCodes.Status400BadRequest
+			});
+		}
+
+		var product = await _productRepository.Get(productId.Value);
+		if (product is null)
+		{
+            return BadRequest(new ErrorModelDTO()
+            {
+                ErrorMessage = "Invalid Id",
+                StatusCode = StatusCodes.Status404NotFound
+            });
+        }
+        return Ok(product);
+    }
 
 }
