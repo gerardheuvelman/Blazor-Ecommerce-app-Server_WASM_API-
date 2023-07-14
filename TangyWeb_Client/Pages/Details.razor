@@ -1,5 +1,7 @@
 ﻿@page "/details/{ProductId:int}"
 @inject IProductService _productService
+@using TangyWeb_Client.ViewModels;
+
 
 @if (IsProcessing)
 {
@@ -31,13 +33,14 @@ else
                                     <div class="col-2 bg-light text-center pt-2 m-2" style="border:3px solid #28A745; border-radius:10px;box-shadow:5px">
                                     <p>@price.Size</p>
                                     <p>@price.Price.ToString("c")</p>
-                                </div>
+                                    </div>
                                 }
                                 <div class="row pl-2">
-                                    <div class="col-2 text-primary"><h4>Count</h4></div>
+                                    <div class="col-2 text-primary">
+                                        <h4>Count</h4>
+                                    </div>
                                     <div class="col-10">
                                         <input type="text" class="form-control" />
-
                                     </div>
                                 </div>
                             </div>
@@ -69,6 +72,8 @@ else
 
     public ProductDTO Product { get; set; } = new();
     public bool IsProcessing { get; set; }
+
+    public DetailsVM detailsVM { get; set; } = new();
 
 
     protected override async Task OnInitializedAsync()
