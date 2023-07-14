@@ -30,10 +30,22 @@ else
                             <p>@((MarkupString)Product.Description)</p>
                             <div class="row">
                                 @foreach(var price in Product.ProductPrices){
-                                    <div class="col-2 bg-light text-center pt-2 m-2" style="border:3px solid #28A745; border-radius:10px;box-shadow:5px">
-                                    <p>@price.Size</p>
-                                    <p>@price.Price.ToString("c")</p>
-                                    </div>
+                                    if (price.Id == DetailsVM.SelectedProductPriceId)
+                                    {
+                                        // This product is selected
+                                        <div class="col-2 bg-light text-center pt-2 m-2" style="border:3px solid #28A745; border-radius:10px;box-shadow:5px">
+                                            <p>@price.Size</p>
+                                            <p>@price.Price.ToString("c")</p>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        // all other products
+                                        <div class="col-2 bg-light text-center pt-2 m-2" style="border:1px solid; border-radius:10px;box-shadow:5px" @onclick="((args) => SelectedProductPrice(args, price.Id))">
+                                        <p>@price.Size</p>
+                                        <p>@price.Price.ToString("c")</p>
+                                        </div>
+                                    }
                                 }
                                 <div class="row pl-2">
                                     <div class="col-2 text-primary">
@@ -73,7 +85,7 @@ else
     public ProductDTO Product { get; set; } = new();
     public bool IsProcessing { get; set; }
 
-    public DetailsVM detailsVM { get; set; } = new();
+    public DetailsVM DetailsVM { get; set; } = new();
 
 
     protected override async Task OnInitializedAsync()
@@ -83,4 +95,10 @@ else
         IsProcessing = false;
     }
 
+    private void SelectedProductPrice(MouseEventArgs e, int productPriceId)
+    {
+        DetailsVM.SelectedProductPriceId = productPriceId;
+        // populate navigation prop
+        DetailsVM.ProductPrice = Product.ProductPrices.FirstOrDefault(p => p.Id == DetailsVM.SelectedProductPriceId);
+    }
 }
