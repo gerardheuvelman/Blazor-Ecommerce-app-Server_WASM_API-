@@ -10,11 +10,12 @@ public class CartService : ICartService
 {
     private readonly ILocalStorageService _localStorage;
 
+    public event Action OnChange;
+
     public CartService(ILocalStorageService localStorage)
     {
         _localStorage = localStorage;
     }
-
 
     public async Task IncrementCart(ShoppingCart cartToAdd)
     {
@@ -43,6 +44,7 @@ public class CartService : ICartService
             });
         }
         await _localStorage.SetItemAsync<List<ShoppingCart>>(SD.ShoppingCart, cart);
+        OnChange.Invoke();
     }
 
     public async Task DecrementCart(ShoppingCart cartToDecrement)
@@ -54,7 +56,7 @@ public class CartService : ICartService
             if (cart[i].ProductId == cartToDecrement.ProductId && cart[i].ProductPriceId == cartToDecrement.ProductPriceId)
             {
                 // if count is 0 or 1... 
-                if(cart[i].Count == 1 || cart[i].Count == 0)
+                if(cart[i].Count == 1 || cartToDecrement.Count == 0)
                 {
                     // remove the item
                     cart.Remove(cart[i]);
@@ -67,5 +69,6 @@ public class CartService : ICartService
             }
         }
         await _localStorage.SetItemAsync<List<ShoppingCart>>(SD.ShoppingCart, cart);
+        OnChange.Invoke();
     }
 }
