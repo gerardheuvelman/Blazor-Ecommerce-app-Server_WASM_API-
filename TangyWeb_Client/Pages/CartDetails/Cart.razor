@@ -101,8 +101,7 @@ else
 
 
 @code {
-
-    public bool IsProcessing { get; set; }
+    public bool IsProcessing { get; set; } = false;
     private List<ShoppingCart> ShoppingCart = new List<ShoppingCart>();
     private IEnumerable<ProductDTO> Products;
     private double OrderTotal { get; set; } = 0;
