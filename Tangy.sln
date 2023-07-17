@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TangyWeb_Server", "TangyWeb_Server\TangyWeb_Server.csproj", "{A2D46BE7-5851-4985-9DBE-7336CC590987}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TangyWeb_Client", "TangyWeb_Client\TangyWeb_Client.csproj", "{463C0513-3555-48B0-AF84-BED917CF3BDC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D19CBA6E-C147-4A8A-BF11-91B3669F732D} = {D19CBA6E-C147-4A8A-BF11-91B3669F732D}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tangy_Models", "Tangy_Models\Tangy_Models.csproj", "{C053F19D-126B-41F6-9C81-E0612DDFE79D}"
 EndProject
