@@ -9,7 +9,7 @@ namespace Tangy_DataAccess;
 
 public class OrderHeaderDTO
 {
-    public int Ìd { get; set; }
+    public int Id { get; set; }
 
     [Required]
     public string UserId { get; set; }
