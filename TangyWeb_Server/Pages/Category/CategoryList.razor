@@ -1,6 +1,7 @@
 ﻿@page "/category"
 @inject ICategoryRepository _categoryRepository
 @inject IJSRuntime _JsRuntime
+@attribute [Authorize]
 
 <div class="row mt-4">
     <div class="col-6">
@@ -29,7 +30,11 @@
                             <td>
                                 <NavLink href=@($"category/edit/{category.Id}") class="btn btn-primary">Edit</NavLink>
                                 <button @onclick="()=>HandleDelete(category.Id)" class="btn btn-danger">Delete</button>
-                                <_DeleteConfirmation IsParentComponentProcessing=@IsLoading ConfirmationChanged=@ConfirmDelete_Click Type="Category"  FriendlyName=@category.Name />
+                                <_DeleteConfirmation
+                                    IsParentComponentProcessing=@IsLoading 
+                                    ConfirmationChanged=@ConfirmDelete_Click 
+                                    Type="Category"  
+                                />
 
                             </td>
                         </tr>
