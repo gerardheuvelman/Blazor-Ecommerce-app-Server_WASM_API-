@@ -1,4 +1,5 @@
 ﻿@page "/product"
+@using Tangy_Common;
 @inject IProductRepository _productRepository
 @inject IJSRuntime _JsRuntime
 @inject IFileUpload _fileUpload
@@ -84,6 +85,13 @@
         {
             var uri = new Uri(_navigationManager.Uri);
             _navigationManager.NavigateTo($"Identity/Account/Login?returnUrl={uri.LocalPath}", forceLoad: true);
+        }
+        else
+        {
+            if (!authState.User.IsInRole(SD.Role_Admin))
+            {
+                _navigationManager.NavigateTo("/ErrorPage");
+            }
         }
     }
 
