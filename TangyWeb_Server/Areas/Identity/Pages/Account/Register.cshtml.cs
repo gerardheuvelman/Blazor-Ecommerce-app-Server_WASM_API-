@@ -129,9 +129,7 @@ namespace TangyWeb_Server.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-
-                    // In a real application, modify the next line!
-                    await _userManager.AddToRoleAsync(user, SD.Role_Admin);
+                    await _userManager.AddToRoleAsync(user, SD.Role_Customer);
                     
                     _logger.LogInformation("User created a new account with password.");
 
