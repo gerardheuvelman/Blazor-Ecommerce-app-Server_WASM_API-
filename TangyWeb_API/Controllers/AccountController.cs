@@ -63,4 +63,40 @@ public class AccountController : ControllerBase
         }
         return StatusCode(201);
     }
+
+    [HttpPost]
+    public async Task<IActionResult> SignIn([FromBody] SignInRequestDTO signInRequestDTO)
+    {
+        if (signInRequestDTO is null || !ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        var result = await _signInManager.PasswordSignInAsync(signInRequestDTO.UserName, signInRequestDTO.Password, false, false);
+        if (result.Succeeded)
+        {
+            var user = await _userManager.FindByNameAsync(signInRequestDTO.UserName);
+            if (user is null) {
+                return Unauthorized(new SignInResponseDTO()
+                {
+                    IsAuthSuccessful = false,
+                    ErrorMessage = "Invalid Authentication"
+                });
+
+            }
+
+            // Everything is valid and we need to log in 
+        }
+        else
+        {
+            return Unauthorized(new SignInResponseDTO()
+            {
+                IsAuthSuccessful = false,
+                ErrorMessage = "Invalid Authentication"
+            });
+        }
+        return StatusCode(201);
+    }
+
+
 }
