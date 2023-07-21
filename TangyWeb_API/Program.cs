@@ -4,6 +4,7 @@ using Tangy_Business.Repository;
 using Tangy_DataAccess.Data;
 using Microsoft.AspNetCore.Identity;
 using Tangy_DataAccess;
+using TangyWeb_API.Helper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,10 @@ builder.Services
     .AddIdentity<ApplicationUser, IdentityRole>()
     .AddDefaultTokenProviders()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+var apiSettingsSection = builder.Configuration.GetSection("APISettings");
+
+builder.Services.Configure<APISettings>(apiSettingsSection);
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
