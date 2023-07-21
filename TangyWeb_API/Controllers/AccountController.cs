@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using System.Text;
 using Tangy_Common;
 using Tangy_DataAccess;
 using Tangy_Models;
@@ -104,5 +107,27 @@ public class AccountController : ControllerBase
         return StatusCode(201);
     }
 
+    private SigningCredentials GetSigningCredentials(string username, string password)
+    {
+        var secret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_aPISettings.SecretKey));
 
+        return new SigningCredentials(secret, SecurityAlgorithms.Sha256);
+    }
+
+    private async Task<List<Claim>> GetClaims(ApplicationUser user)
+    {
+        var claims = new List<Claim>()
+        {
+            new Claim(ClaimTypes.Name, user.Email),
+            new Claim(ClaimTypes.Email, user.Email),
+            new Claim("Id", user.Id)
+        };
+
+        var roles = await _userManager.GetRolesAsync(await _userManager.FindByEmailAsync(user.Email));
+        foreach (var role in roles)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, role);
+        }
+        return claims;
+    }
 }
