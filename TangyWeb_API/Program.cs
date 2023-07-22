@@ -5,6 +5,10 @@ using Tangy_DataAccess.Data;
 using Microsoft.AspNetCore.Identity;
 using Tangy_DataAccess;
 using TangyWeb_API.Helper;
+using System.Text;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,8 +25,31 @@ builder.Services
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 var apiSettingsSection = builder.Configuration.GetSection("APISettings");
-
 builder.Services.Configure<APISettings>(apiSettingsSection);
+
+var apiSettings = apiSettingsSection.Get<APISettings>();
+var key = Encoding.ASCII.GetBytes( apiSettings.SecretKey);
+
+builder.Services.AddAuthentication(opt =>
+{
+    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x=>
+{
+    x.RequireHttpsMetadata = false;
+    x.SaveToken = true;
+    x.TokenValidationParameters = new()
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateAudience = true,
+        ValidateIssuer = true,
+        ValidAudience = apiSettings.ValidAudience,
+        ValidIssuer = apiSettings.ValidIssuer,
+        ClockSkew = TimeSpan.Zero
+    };
+});
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
@@ -46,6 +73,8 @@ app.UseCors("Tangy");
 
 app.UseRouting();
 
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
