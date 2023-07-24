@@ -59,7 +59,7 @@ public class AuthenticationService : IAuthenticationService
         {
             return new SignUpResponseDTO() { IsRegistrationSuccessful = true };
         }
-        else return result;
+        else return new SignUpResponseDTO() { IsRegistrationSuccessful = false };
 
     }
 }

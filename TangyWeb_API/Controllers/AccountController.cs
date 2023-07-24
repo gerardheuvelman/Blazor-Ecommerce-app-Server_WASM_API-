@@ -56,7 +56,7 @@ public class AccountController : ControllerBase
         {
             return BadRequest(new SignUpResponseDTO()
             {
-                IsRegisterationSuccessful = false,
+                IsRegistrationSuccessful = false,
                 Errors = result.Errors.Select(e=>e.Description)
             });
         }
@@ -66,7 +66,7 @@ public class AccountController : ControllerBase
         {
             return BadRequest(new SignUpResponseDTO()
             {
-                IsRegisterationSuccessful = false,
+                IsRegistrationSuccessful = false,
                 Errors = result.Errors.Select(e => e.Description)
             });
         }
