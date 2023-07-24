@@ -70,7 +70,7 @@
     {
         ShowRegistrationErrors = false;
         IsProcessing = true;
-        var result = _authService.RegisterUser(SignUpRequest).GetAwaiter().GetResult();
+        var result = await _authService.RegisterUser(SignUpRequest);
         if (result.IsRegistrationSuccessful)
         {
             _navigationManager.NavigateTo("/");
