@@ -29,7 +29,7 @@ public partial class Login
         var result = await _authService.Login(SignInRequest);
         if (result.IsAuthSuccessful)
         {
-            _navigationManager.NavigateTo("/");
+            _navigationManager.NavigateTo("/", forceLoad: true);
         }
         else
         {
