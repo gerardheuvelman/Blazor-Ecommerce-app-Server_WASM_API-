@@ -26,7 +26,7 @@ public partial class Register
         var result = await _authService.RegisterUser(SignUpRequest);
         if (result.IsRegistrationSuccessful)
         {
-            _navigationManager.NavigateTo("/");
+            _navigationManager.NavigateTo("/login");
         }
         else
         {
