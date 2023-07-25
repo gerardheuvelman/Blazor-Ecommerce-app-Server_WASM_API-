@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -89,9 +88,8 @@ public class AccountController : ControllerBase
                 return Unauthorized(new SignInResponseDTO()
                 {
                     IsAuthSuccessful = false,
-                    ErrorMessage = "Invalid Authentication"
+                    ErrorMessage = "Invalid Authentication (User not found)"
                 });
-
             }
 
             // Everything is valid and we need to log in
@@ -126,7 +124,7 @@ public class AccountController : ControllerBase
             return Unauthorized(new SignInResponseDTO()
             {
                 IsAuthSuccessful = false,
-                ErrorMessage = "Invalid Authentication (Not succedded)"
+                ErrorMessage = "Invalid Authentication (Not succeeded)"
             });
         }
         return StatusCode(201);

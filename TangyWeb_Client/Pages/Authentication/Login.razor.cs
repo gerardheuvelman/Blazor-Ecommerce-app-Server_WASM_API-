@@ -9,15 +9,17 @@ public partial class Login
     private SignInRequestDTO SignInRequest = new();
 
     public bool IsProcessing = false;
-    public string Errors { get; set; }
+    
     public bool ShowSignInErrors { get; set; }
+    
+    public string Errors { get; set; }
+    
 
     [Inject]
     public IAuthenticationService _authService { get; set; }
 
     [Inject]
     public NavigationManager _navigationManager { get; set; }
-
 
 
     private async Task LoginUser()
