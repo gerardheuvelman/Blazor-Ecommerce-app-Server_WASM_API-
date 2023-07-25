@@ -2,7 +2,7 @@
 @inject IProductService _productService
 @inject ICartService _cartService
 @inject NavigationManager _navigationManager
-@inject IJSRuntime _jsRuntime
+@inject IJSRuntime _JsRuntime
 
 @using TangyWeb_Client.ViewModels;
 
@@ -136,6 +136,6 @@ else
 
         await _cartService.IncrementCart(shoppingCart);
         _navigationManager.NavigateTo("/");
-        await _jsRuntime.ToastrSuccess("Product added to cart successfully");
+        await _JsRuntime.ToastrSuccess("Product added to cart successfully");
     }
 }

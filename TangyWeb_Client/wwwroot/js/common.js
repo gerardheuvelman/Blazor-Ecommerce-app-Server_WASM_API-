@@ -1,4 +1,6 @@
-﻿window.ShowToastr = (type, message) => {
+﻿console.log("COMMON.JS being executed!!");
+
+window.ShowToastr = (type, message) => {
     if (type === "success") {
         toastr.success(message, 'Operation Successful!', { timeOut: 5000 });
     }

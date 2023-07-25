@@ -117,7 +117,13 @@ else
     private async Task LoadCart()
     {
         OrderTotal = 0;
+        // I CHANGED THIS TO AVOID A NULL REF EXCEPTION WHEN THERE IS NO KEY IN LOCAL STORAGE
+        if (!await _localStorage.ContainKeyAsync(SD.ShoppingCart))
+        {
+            await _localStorage.SetItemAsync<List<ShoppingCart>>(SD.ShoppingCart, new List<ShoppingCart>());
+        }
         ShoppingCart = await _localStorage.GetItemAsync<List<ShoppingCart>>(SD.ShoppingCart);
+
         foreach (var cart in ShoppingCart)
         {
             cart.Product = Products.FirstOrDefault(p => p.Id == cart.ProductId);
