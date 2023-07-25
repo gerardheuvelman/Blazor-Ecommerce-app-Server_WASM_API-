@@ -27,6 +27,18 @@ public class AuthStateProvider : AuthenticationStateProvider
             return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
         }
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
-        return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), "jwtAuthType" )));
+        return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), "jwtAuthType")));
+    }
+
+    public void NotifyUserLoggedIn(string token)
+    {
+        var authenticatedUser = new ClaimsPrincipal(new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token)));
+        var authState = Task.FromResult(new AuthenticationState(authenticatedUser));
+        NotifyAuthenticationStateChanged(authState);
+    }
+    public void NotifyUserLogOut()
+    {
+        var authState = Task.FromResult( new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity())));
+        NotifyAuthenticationStateChanged(authState);
     }
 }

@@ -15,6 +15,9 @@ public partial class Logout
     {
         await _authService.Logout();
         _navigationManager.NavigateTo("/", forceLoad: true);
+        //_navigationManager.NavigateTo("/");
+
+        // Unfortunately, I still need to use forceload, because the alternative way (AuthStateProvider.NotifyUserLogout) does not seem to work for me. Too bad because now the whole page will need to be rerendered. See also login.razor.cs
     }
 
 }
