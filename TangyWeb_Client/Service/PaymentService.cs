@@ -22,7 +22,7 @@ public class PaymentService : IPaymentService
         {
             var content = JsonConvert.SerializeObject(model);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
-            var response = await _client.PostAsync("api/stripepayment", bodyContent);
+            var response = await _client.PostAsync("api/stripepayment/create", bodyContent);
             string responseResult = response.Content.ReadAsStringAsync().Result;
             if (response.IsSuccessStatusCode)
             {
