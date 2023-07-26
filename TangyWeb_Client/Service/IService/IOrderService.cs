@@ -8,4 +8,6 @@ public interface IOrderService
     public Task<OrderDTO> Get(int productId);
 
     public Task<OrderDTO> Create(StripePaymentDTO paymentDTO);
+
+    public Task<OrderHeaderDTO> MarkPaymentSuccessful(OrderHeaderDTO orderHeader);
 }

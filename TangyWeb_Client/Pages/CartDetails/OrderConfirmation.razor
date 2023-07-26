@@ -12,15 +12,31 @@
     }
     else
     {
-        <div class="row mt-4 pt-4">
-            <div class="col-10 offset-1 text-center">
-                <h2 class="text-warning">   Order Confirmed</h2>
-                <p>
-                    Your order has been placed successfully wirh order id 
-                </p>
-                <img src="/images/confirmation.jpg" width="100%" style="border-radius: 30px" />
+        @if(Order.OrderHeader.Status == SD.Status_Confirmed)
+        {
+            <div class="row mt-4 pt-4">
+                <div class="col-10 offset-1 text-center">
+                    <h2 class="text-warning">Order Confirmed</h2>
+                    <p>
+                        Your order has been placed successfully with order id @Order.OrderHeader.Id
+                    </p>
+                    <img src="/images/confirmation.jpg" width="100%" style="border-radius: 30px" />
+                </div>
             </div>
-        </div>
+        }
+        else
+        {
+            <div class="row mt-4 pt-4">
+                <div class="col-10 offset-1 text-center">
+                    <h2 class="text-warning">Order Issue!</h2>
+                    <p>
+                        Your order (order id: @Order.OrderHeader.Id) had a payment issue. Please contact us at 555-55-5555.
+                    </p>
+                    <img src="/images/confirmation.jpg" width="100%" style="border-radius: 30px" />
+                </div>
+            </div>
+
+        }
     }
 </div>
 
@@ -30,12 +46,23 @@
     private bool IsProcessing { get; set; }
     private OrderDTO Order { get; set; }
 
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         IsProcessing = true;
 
         Order = await _localStorage.GetItemAsync<OrderDTO>(SD.Local_OrderDetails); // IT SHOULD BE THERE OR THIS WILL CRASH!!!
-        // add logic to check payment and update status.
+
+
+        var updatedOrder = await _orderService.MarkPaymentSuccessful(Order.OrderHeader);
+        if (updatedOrder.Status == SD.Status_Confirmed)
+        {
+            await _localStorage.RemoveItemAsync(SD.ShoppingCart);
+            await _localStorage.RemoveItemAsync(SD.Local_OrderDetails);
+        }
+
+
+        await _localStorage.RemoveItemAsync(SD.Local_OrderDetails);
+        await _localStorage.RemoveItemAsync(SD.ShoppingCart);
 
         IsProcessing = false;
     }

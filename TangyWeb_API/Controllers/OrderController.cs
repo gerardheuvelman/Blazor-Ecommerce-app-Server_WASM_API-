@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Stripe.Checkout;
 using Tangy_Business.Repository;
 using Tangy_Business.Repository.IRepository;
 using Tangy_Models;
@@ -56,5 +57,24 @@ public class OrderController : ControllerBase
 		return Ok(result);
 	}
 
-
+	[HttpPost]
+	[ActionName("paymentsuccessful")]
+	public async Task<IActionResult> PaymentSuccessful([FromBody] OrderHeaderDTO orderHeaderDTO)
+	{
+		var service = new SessionService();
+		var sessionDetails = service.Get(orderHeaderDTO.SessionId);
+		if (sessionDetails.PaymentStatus == "paid") // Somhow for me it always "pending". Is this a Stripe issue? 
+		{
+			var result = await _orderRepository.MarkPaymentSuccessful(orderHeaderDTO.Id);
+			if (result is null)
+			{
+				return BadRequest(new ErrorModelDTO
+				{
+					ErrorMessage = "Cannot mark payment as successful"
+				});
+			}
+			return Ok(result);
+        }
+        return BadRequest();
+    }
 }
