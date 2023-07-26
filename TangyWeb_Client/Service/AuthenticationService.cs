@@ -48,7 +48,7 @@ public class AuthenticationService : IAuthenticationService
         await _localStorage.RemoveItemAsync(SD.Local_Token);
         await _localStorage.RemoveItemAsync(SD.Local_UserDetails);
 
-        ((AuthStateProvider)_authStateProvider).NotifyUserLogOut();
+        ((AuthStateProvider)_authStateProvider).NotifyUserLogout();
 
         _client.DefaultRequestHeaders.Authorization = null;
     }
