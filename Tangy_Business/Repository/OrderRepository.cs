@@ -160,4 +160,9 @@ public class OrderRepository : IOrderRepository
         await _db.SaveChangesAsync();
         return true;
     }
+
+    private async Task HandleCheckout()
+    {
+
+    }
 }

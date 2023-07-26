@@ -1,6 +1,7 @@
 ﻿@page "/summary"
 @inject ILocalStorageService _localStorage
 @inject IProductService _productService
+@inject IOrderService _orderService
 @inject IJSRuntime _jsRuntime
 @using Microsoft.AspNetCore.Authorization
 @attribute [Authorize]
@@ -158,12 +159,23 @@ else
             Order.OrderHeader.Email = userInfo.Email;
             Order.OrderHeader.PhoneNumber = userInfo.PhoneNumber;
         }
-
         IsProcessing = false;
     }
 
     private async Task HandleCheckout()
     {
-        
+        try
+        {
+            var paymentDto = new StripePaymentDTO()
+            {
+                Order = Order
+            };
+
+            var orderHeaderSaved = await _orderService.Create(paymentDto);
+        }
+        catch (Exception e)
+        {
+            await _jsRuntime.ToastrError(e.Message);
+        }
     }
 }

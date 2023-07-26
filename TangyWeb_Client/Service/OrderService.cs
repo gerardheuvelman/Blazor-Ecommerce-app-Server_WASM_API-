@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Net.Http;
+using System.Text;
 using Tangy_Models;
 using TangyWeb_Client.Service.IService;
 
@@ -8,20 +9,34 @@ namespace TangyWeb_Client.Service;
 public class OrderService : IOrderService
 {
 
-    private readonly HttpClient _httpClient;
+    private readonly HttpClient _client;
     private IConfiguration _configuration;
     private string BaseServerUrl;
 
     public OrderService(HttpClient httpClient, IConfiguration configuration)
     {
-        _httpClient = httpClient;
+        _client = httpClient;
         _configuration = configuration;
         BaseServerUrl = _configuration.GetSection("BaseServerUrl").Value;
     }
 
+    public async Task<OrderDTO> Create(StripePaymentDTO paymentDTO)
+    {
+        var content = JsonConvert.SerializeObject(paymentDTO);
+        var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
+        var response = await _client.PostAsync("api/order/create", bodyContent);
+        string responseResult = response.Content.ReadAsStringAsync().Result;
+        if (response.IsSuccessStatusCode)
+        {
+            var result = JsonConvert.DeserializeObject<OrderDTO>(responseResult);
+            return result;
+        }
+        return new OrderDTO();
+    }
+
     public async Task<OrderDTO> Get(int orderHeaderId)
     {
-        var response = await _httpClient.GetAsync($"/api/order/{orderHeaderId}");
+        var response = await _client.GetAsync($"/api/order/{orderHeaderId}");
         var content = await response.Content.ReadAsStringAsync();
         if (response.IsSuccessStatusCode)
         {
@@ -33,20 +48,19 @@ public class OrderService : IOrderService
             var errorModel = JsonConvert.DeserializeObject<ErrorModelDTO>(content);
             throw new Exception(errorModel.ErrorMessage);
         }
-
     }
 
     public async Task<IEnumerable<OrderDTO>> GetAll(string? userId=null)
     {
-        var response = await _httpClient.GetAsync("/api/order");
+        var response = await _client.GetAsync("/api/order");
         if (response.IsSuccessStatusCode)
         {
             var content = await response.Content.ReadAsStringAsync();
             var orders = JsonConvert.DeserializeObject<IEnumerable<OrderDTO>>(content);
             return orders;
         }
-
         return new List<OrderDTO>();
-
     }
+
+
 }
