@@ -7,7 +7,7 @@ using static System.Net.WebRequestMethods;
 
 namespace TangyWeb_API.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/[controller]/[action]")]
 [ApiController]
 public class StripePaymentController : ControllerBase
 {

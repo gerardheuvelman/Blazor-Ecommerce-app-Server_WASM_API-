@@ -9,11 +9,11 @@ namespace TangyWeb_Client.Service;
 public class PaymentService : IPaymentService
 {
 
-    private readonly HttpClient _client;
+    private readonly HttpClient _httpClient;
 
     public PaymentService(HttpClient httpClient)
     {
-        _client = httpClient;
+        _httpClient = httpClient;
     }
 
     public async Task<SuccessModelDTO> Checkout(StripePaymentDTO model)
@@ -22,7 +22,8 @@ public class PaymentService : IPaymentService
         {
             var content = JsonConvert.SerializeObject(model);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
-            var response = await _client.PostAsync("api/stripepayment/create", bodyContent);
+
+            var response = await _httpClient.PostAsync("api/stripepayment/create", bodyContent);
             string responseResult = response.Content.ReadAsStringAsync().Result;
             if (response.IsSuccessStatusCode)
             {
