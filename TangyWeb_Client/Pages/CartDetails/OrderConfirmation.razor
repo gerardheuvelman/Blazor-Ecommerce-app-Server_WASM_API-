@@ -28,7 +28,7 @@
         {
             <div class="row mt-4 pt-4">
                 <div class="col-10 offset-1 text-center">
-                    <h2 class="text-warning">Order Issue!</h2>
+                    <h2 class="text-danger">Order Issue!</h2>
                     <p>
                         Your order (order id: @Order.OrderHeader.Id) had a payment issue. Please contact us at 555-55-5555.
                     </p>
@@ -56,6 +56,7 @@
         var updatedOrder = await _orderService.MarkPaymentSuccessful(Order.OrderHeader);
         if (updatedOrder.Status == SD.Status_Confirmed)
         {
+            Order.OrderHeader.Status = updatedOrder.Status;
             await _localStorage.RemoveItemAsync(SD.ShoppingCart);
             await _localStorage.RemoveItemAsync(SD.Local_OrderDetails);
         }

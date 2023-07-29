@@ -17,7 +17,7 @@ public interface IOrderRepository
     public Task<IEnumerable<OrderDTO>> GetAll(string? userId = null, string? status = null);
 
     public Task<OrderHeaderDTO> UpdateHeader(OrderHeaderDTO objDTO);
-    public Task<OrderHeaderDTO> MarkPaymentSuccessful(int id);
+    public Task<OrderHeaderDTO> MarkPaymentSuccessful(int id, string paymentIntentId);
     public Task<bool> UpdateOrderStatus(int orderId, string status);
     public Task<OrderHeaderDTO> CancelOrder(int id);
 }

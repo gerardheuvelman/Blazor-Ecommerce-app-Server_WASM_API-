@@ -112,7 +112,7 @@ public class OrderRepository : IOrderRepository
 
     }
 
-    public async Task<OrderHeaderDTO> MarkPaymentSuccessful(int id)
+    public async Task<OrderHeaderDTO> MarkPaymentSuccessful(int id, string paymentIntentId)
     {
         var data = await _db.OrderHeaders.FindAsync(id);
         if (data is null) 
@@ -121,6 +121,7 @@ public class OrderRepository : IOrderRepository
         }
         if (data.Status == SD.Status_Pending)
         {
+            data.PaymentIntentId = paymentIntentId;
             data.Status = SD.Status_Confirmed;
             await _db.SaveChangesAsync();
             return _mapper.Map<OrderHeader, OrderHeaderDTO>(data);

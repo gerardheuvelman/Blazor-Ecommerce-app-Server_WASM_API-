@@ -65,7 +65,7 @@ public class OrderController : ControllerBase
 		var sessionDetails = service.Get(orderHeaderDTO.SessionId);
 		if (sessionDetails.PaymentStatus == "paid") // Somhow for me it always "pending". Is this a Stripe issue? 
 		{
-			var result = await _orderRepository.MarkPaymentSuccessful(orderHeaderDTO.Id);
+			var result = await _orderRepository.MarkPaymentSuccessful(orderHeaderDTO.Id, sessionDetails.PaymentIntentId);
 			if (result is null)
 			{
 				return BadRequest(new ErrorModelDTO
