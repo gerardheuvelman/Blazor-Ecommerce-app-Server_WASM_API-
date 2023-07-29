@@ -25,9 +25,37 @@ public class OrderRepository : IOrderRepository
         _mapper = mapper;
     }
 
-    public Task<OrderHeaderDTO> CancelOrder(int id)
+    public async Task<OrderHeaderDTO> CancelOrder(int id)
     {
-        throw new NotImplementedException();
+       var orderHeader = await _db.OrderHeaders.FindAsync(id);
+        if (orderHeader is null)
+        {
+            return new OrderHeaderDTO();
+        }
+
+        if (orderHeader.Status == SD.Status_Pending)
+        {
+            orderHeader.Status = SD.Status_Cancelled;
+            await _db.SaveChangesAsync();
+        }
+        if (orderHeader.Status == SD.Status_Confirmed)
+        {
+            //refund
+            var options = new Stripe.RefundCreateOptions
+            {
+                Reason = Stripe.RefundReasons.RequestedByCustomer,
+                PaymentIntent = orderHeader.PaymentIntentId
+            };
+
+            var service = new Stripe.RefundService();
+            Stripe.Refund refund = service.Create(options);
+
+            orderHeader.Status = SD.Status_Refunded;
+            await _db.SaveChangesAsync();
+        }
+
+        return _mapper.Map<OrderHeader, OrderHeaderDTO>(orderHeader);
+
     }
 
     public async Task<OrderDTO> Create(OrderDTO objDTO)

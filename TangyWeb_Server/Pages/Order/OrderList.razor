@@ -1,6 +1,8 @@
 ﻿@page "/orderlist"
 @inject IOrderRepository _orderRepository
 @inject NavigationManager _navigationManager
+@attribute [Authorize]
+
 
 @using Radzen
 @using Radzen.Blazor
