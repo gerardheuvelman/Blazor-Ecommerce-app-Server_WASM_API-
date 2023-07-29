@@ -160,7 +160,7 @@ else
                             </ul>
                             @if(Order.OrderHeader.Status== SD.Status_Confirmed)
                             {
-                                <button class="btn btn-success form-control my-1">Ship Order</button>                            
+                                <button @onclick="ShipOrder" class="btn btn-success form-control my-1">Ship Order</button>                            
                             }
                             @if (Order.OrderHeader.Status == SD.Status_Confirmed || Order.OrderHeader.Status == SD.Status_Pending)
                             {
@@ -207,4 +207,19 @@ else
         Order.OrderHeader = orderHeaderDTO; // This refreshes the UI
         _JsRuntime.ToastrSuccess("Order has been updated sucessfully");
     }
+
+    private async Task ShipOrder()
+    {
+        if (string.IsNullOrEmpty(Order.OrderHeader.Carrier) || (string.IsNullOrEmpty(Order.OrderHeader.Tracking)))
+        {
+            _JsRuntime.ToastrError("Please enter Carrier and Tracking information");
+            return;
+        }
+
+        Order.OrderHeader.Status = SD.Status_Shipped;
+        var orderHeaderDTO = await _orderRepository.UpdateHeader(Order.OrderHeader);
+        Order.OrderHeader = orderHeaderDTO; // This refreshes the UI
+        _JsRuntime.ToastrSuccess("Order has been Shipped!");
+    }
+
 }
