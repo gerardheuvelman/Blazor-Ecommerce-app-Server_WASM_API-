@@ -137,10 +137,20 @@ public class OrderRepository : IOrderRepository
     {
         if (objDTO is not null)
         {
-            var orderHeader = _mapper.Map<OrderHeaderDTO, OrderHeader>(objDTO);
-            _db.OrderHeaders.Update(orderHeader);
+            var orderHeaderFromDb = _db.OrderHeaders.FirstOrDefault(oh => oh.Id == objDTO.Id);
+            
+            orderHeaderFromDb.Name = objDTO.Name;
+            orderHeaderFromDb.PhoneNumber = objDTO.PhoneNumber;
+            orderHeaderFromDb.Carrier = objDTO.Carrier;
+            orderHeaderFromDb.Tracking = objDTO.Tracking;
+            orderHeaderFromDb.StreetAddress = objDTO.StreetAddress;
+            orderHeaderFromDb.City = objDTO.City;
+            orderHeaderFromDb.State = objDTO.State;
+            orderHeaderFromDb.PostalCode = objDTO.PostalCode;
+            orderHeaderFromDb.Status = objDTO.Status;
+
             await _db.SaveChangesAsync();
-            return _mapper.Map<OrderHeader, OrderHeaderDTO>(orderHeader);
+            return _mapper.Map<OrderHeader, OrderHeaderDTO>(orderHeaderFromDb);
         }
         return new OrderHeaderDTO();
     }

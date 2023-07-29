@@ -97,8 +97,7 @@ else
                                 <div class="row my-1">
                                     <div class="col-3">Tracking</div>
                                     <div class="col-9">
-                                        <input type="text" readonly value="@Order.OrderHeader.Tracking" class="form-control" />
-
+                                        <InputText @bind-Value="Order.OrderHeader.Tracking" class="form-control" />
                                     </div>
                                 </div>
                                 @if (Order.OrderHeader.Status != SD.Status_Confirmed && Order.OrderHeader.Status != SD.Status_Pending)
@@ -204,6 +203,8 @@ else
 
     private async Task UpdateOrder()
     {
+        var orderHeaderDTO = await _orderRepository.UpdateHeader(Order.OrderHeader);
+        Order.OrderHeader = orderHeaderDTO; // This refreshes the UI
         _JsRuntime.ToastrSuccess("Order has been updated sucessfully");
     }
 }
