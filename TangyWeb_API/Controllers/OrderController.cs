@@ -69,7 +69,8 @@ public class OrderController : ControllerBase
 		if (sessionDetails.PaymentStatus == "paid")
 		{
 			var result = await _orderRepository.MarkPaymentSuccessful(orderHeaderDTO.Id, sessionDetails.PaymentIntentId);
-			await _emailSender.SendEmailAsync(orderHeaderDTO.Email, "Tangy Order Confirmation", "New order has been crated" + orderHeaderDTO.Id); 
+			// I commented out the next line, because both methods in the EmailSender class are unavailable to me. See furhter comments in the EmailSender class.
+			//await _emailSender.SendEmailAsync(orderHeaderDTO.Email, "Tangy Order Confirmation", "New order has been crated" + orderHeaderDTO.Id); 
 			if (result is null)
 			{
 				return BadRequest(new ErrorModelDTO
