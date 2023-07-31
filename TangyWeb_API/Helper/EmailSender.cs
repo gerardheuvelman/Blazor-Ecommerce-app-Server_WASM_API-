@@ -33,7 +33,7 @@ public class EmailSender : IEmailSender
             };
 
             // send email
-            using var emailClient = new SmtpClient;
+            using var emailClient = new SmtpClient();
             emailClient.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
             emailClient.Authenticate("me@gmail.com", "1234567");
             emailClient.SendAsync(emailToSend);
